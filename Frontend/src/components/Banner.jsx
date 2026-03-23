@@ -11,9 +11,12 @@ function Banner() {
               <span className="text-pink-500">new everyday!!!</span>
             </h1>
             <p className="text-sm md:text-xl">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor,
-              et totam. Tempora amet atque expedita, quae corrupti totam sed
-              pariatur corporis at veniam est voluptas animi!
+              I am learning this deployment project to understand how to move a full-stack MERN application
+        from development to production using Docker, GitHub Actions, and AWS EC2. This project helps me
+        practice setting up CI/CD pipelines, configuring backend and frontend containers, and ensuring
+        everything runs smoothly on a live server. By doing this, I am gaining hands-on experience with
+        professional deployment workflows and understanding how real-world applications are managed and
+        maintained in production environments.
             </p>
             <label className="input input-bordered flex items-center gap-2">
               <svg
