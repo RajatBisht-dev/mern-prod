@@ -1,6 +1,5 @@
-name: Deploy MERN App to EC2
+name: Deploy to EC2
 
-# Trigger deployment on push to main branch
 on:
   push:
     branches:
@@ -11,29 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1 — Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2 — Setup SSH agent for EC2 access
-      - name: Setup SSH Agent
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      # Step 3 — Connect to EC2 and deploy
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
-            echo "Deploying MERN stack..."
+          ssh ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             cd ~/apps/mern-prod
-
-            # Pull latest changes
+            git reset --hard origin/main
             git pull origin main
-
-            # Rebuild and restart Docker containers
             docker compose down
             docker compose up -d --build
-
-            echo "Deployment complete!"
           EOF
